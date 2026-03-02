@@ -127,13 +127,27 @@ jupyter notebook notebooks/main_pipeline.ipynb
 
 Xem chi tiết trong `reports/experiment_results.csv` và notebook Section 9.
 
-| Feature       | Model               | F1 Weighted (dự kiến) |
-| ------------- | ------------------- | --------------------- |
-| TF-IDF Bigram | LinearSVC (tuned)   | ~0.88–0.91            |
-| BERT MiniLM   | LinearSVC           | ~0.89–0.92            |
-| TF-IDF Bigram | Logistic Regression | ~0.87–0.90            |
-| TF-IDF Bigram | Random Forest       | ~0.83–0.87            |
-| BoW           | Complement NB       | ~0.80–0.84            |
+**Best model: TF-IDF Bigram + LinearSVC (C=0.5) — F1 Weighted = 0.8631**
+
+| Feature               | Model                       | F1 Weighted |
+| --------------------- | --------------------------- | ----------- |
+| TF-IDF Bigram (C=0.5) | LinearSVC (tuned)           | **0.8631**  |
+| TF-IDF Bigram (C=5.0) | Logistic Regression (tuned) | 0.8597      |
+| TF-IDF Unigram        | Logistic Regression         | 0.8590      |
+| TF-IDF Bigram         | LinearSVC                   | 0.8599      |
+| TF-IDF Bigram         | Logistic Regression         | 0.8573      |
+| BERT (MiniLM)         | LinearSVC                   | 0.8241      |
+| Word2Vec              | LinearSVC                   | 0.8244      |
+| TF-IDF Bigram         | Random Forest               | 0.8270      |
+| BoW                   | Complement NB               | 0.8010      |
+
+**Nhận xét nhanh:**
+
+- TF-IDF Bigram + LinearSVC (tuned C=0.5) là best overall với F1 = 0.8631
+- BERT (0.8241) bất ngờ **không vượt** TF-IDF — do sample nhỏ (13,981 rows) và chỉ dùng làm feature extractor (không fine-tune)
+- Word2Vec (0.8244) tương đương BERT nhưng train nhanh hơn nhiều
+- Random Forest (0.827) kém LinearSVC ~3.3% trên sparse features, đúng như dự đoán
+- Không có class nào có F1 < 0.7; khó nhất là Credit card (0.806)
 
 ---
 
