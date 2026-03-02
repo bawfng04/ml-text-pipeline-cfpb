@@ -48,7 +48,7 @@ DEFAULT_PARAMS = {
         "alpha": 1.0,
     },
     "random_forest": {
-        "n_estimators": 200,
+        "n_estimators": 50,
         "max_features": "sqrt",
         "max_depth": None,
         "min_samples_leaf": 2,
