@@ -3,19 +3,6 @@ data/complaints.csv
 data/complaints.csv.zip
 data/df_clean.parquet
 
-# Features (tự sinh ra khi chạy notebook)
-features/*.npz
-features/*.npy
-features/*.pkl
-features/*.model
-features/word2vec.model.wv.vectors.npy
-!features/.gitkeep
-
-# Reports (nộp riêng)
-reports/*.csv
-reports/*.pdf
-!reports/.gitkeep
-
 # Python
 __pycache__/
 *.py[cod]
