@@ -1,0 +1,150 @@
+YÊU CẦU BÀI TẬP LỚN MÔN HỌC MÁY
+1. Giới thiệu
+Bài tập lớn của môn học Học máy nhằm giúp sinh viên vận dụng các kiến thức lý thuyết đã học để giải quyết những bài toán thực tế trên nhiều loại dữ liệu khác nhau. Thông qua việc xây dựng quy trình xử lý dữ liệu, trích xuất đặc trưng, huấn luyện mô hình và đánh giá kết quả, sinh viên sẽ nắm vững các bước cơ bản trong việc triển khai một hệ thống học máy hoàn chỉnh.
+
+Nội dung bài tập trải dài trên ba dạng dữ liệu phổ biến: dữ liệu dạng bảng, dữ liệu văn bản và dữ liệu ảnh. Mỗi dạng dữ liệu đều có những đặc thù riêng, yêu cầu sinh viên lựa chọn phương pháp xử lý và mô hình phù hợp. Qua đó, sinh viên không chỉ củng cố kiến thức lý thuyết mà còn rèn luyện kỹ năng thực hành, tư duy phân tích và khả năng viết báo cáo khoa học.
+
+2. Tổng quan về pipeline học máy
+Trong học máy, một hệ thống thường được triển khai theo chuỗi các bước gọi là pipeline. Pipeline mô tả toàn bộ quy trình từ dữ liệu thô ban đầu cho đến khi xây dựng được mô hình dự đoán và đánh giá kết quả. Hiện nay, có hai hướng tiếp cận phổ biến: pipeline học máy truyền thống và pipeline học sâu (deep learning).
+
+Pipeline học máy truyền thống thường bao gồm:
+
+EDA (Exploratory Data Analysis): thống kê mô tả dữ liệu, trực quan hóa, phát hiện dữ liệu thiếu, giá trị ngoại lai và xu hướng phân phối.
+
+Tiền xử lý dữ liệu: làm sạch dữ liệu, xử lý giá trị thiếu, chuẩn hóa hoặc chuẩn chỉnh dữ liệu, mã hóa dữ liệu phân loại, chia tập train/test.
+
+Trích xuất và lựa chọn đặc trưng: sử dụng các kỹ thuật khác nhau tùy loại dữ liệu, ví dụ:
+
+Dữ liệu văn bản (Text): Truyền thống: Bag-of-Words, TF-IDF, n-gram. Học sâu: RNN/LSTM, Transformer (BERT, GPT).
+
+Dữ liệu ảnh (Image): Truyền thống: HOG (Histogram of Oriented Gradients), SIFT, PCA để giảm chiều sau khi vector hóa ảnh. Học sâu: CNN (Convolutional Neural Network), ResNet, VGG, EfficientNet, Transformer-based models (ViT, Swin Transformer).
+
+Dữ liệu bảng (Tabular): Truyền thống: đặc trưng thống kê (mean, std), chuẩn hóa (z-score, min-max), mã hóa dữ liệu phân loại (one-hot encoding, label encoding). Học sâu: MLP (Multilayer Perceptron), TabNet, NODE (Neural Oblivious Decision Ensembles).
+
+Huấn luyện mô hình: áp dụng các thuật toán học máy truyền thống như Logistic Regression, SVM, k-NN, Random Forest, Naive Bayes.
+
+Đánh giá mô hình: sử dụng các chỉ số như accuracy, precision, recall, F1-score.
+
+Pipeline học sâu (deep learning) hiện đại:
+Thường đơn giản hơn ở khâu trích xuất đặc trưng nhờ khả năng tự động học biểu diễn của mạng nơ-ron:
+
+EDA (Exploratory Data Analysis): trực quan hóa dữ liệu, thống kê mô tả, kiểm tra phân phối, phát hiện dữ liệu thiếu hoặc bất thường.
+
+Tiền xử lý dữ liệu cơ bản: chuẩn hóa (normalization), resize ảnh, tokenization văn bản, padding chuỗi.
+
+Mạng nơ-ron học đặc trưng: CNN cho ảnh, RNN/LSTM cho dữ liệu chuỗi, Transformer cho văn bản và ảnh (ViT, BERT).
+
+Huấn luyện đầu-cuối (end-to-end training): toàn bộ mô hình được tối ưu cùng một lúc bằng gradient descent.
+
+Đánh giá và triển khai: sử dụng các chỉ số phù hợp (accuracy, F1-score, BLEU, IoU), và triển khai mô hình vào ứng dụng thực tế.
+
+Lưu ý: Trong phạm vi môn học này, sinh viên bắt buộc phải triển khai pipeline theo hướng truyền thống. Nếu có nhóm thực hiện thêm pipeline học sâu và tiến hành so sánh, báo cáo sẽ được cộng điểm thưởng để khuyến khích mở rộng và sáng tạo.
+
+3. Mục tiêu
+Bài tập lớn được thiết kế với các mục tiêu cụ thể sau:
+
+Hiểu và áp dụng được quy trình pipeline học máy truyền thống, bao gồm: tiền xử lý dữ liệu, trích xuất đặc trưng, huấn luyện và đánh giá mô hình.
+
+Rèn luyện kỹ năng triển khai mô hình học máy trên các loại dữ liệu khác nhau: bảng, văn bản, và ảnh.
+
+Phát triển khả năng phân tích, so sánh, và đánh giá hiệu quả của các mô hình học máy thông qua các chỉ số đo lường.
+
+Rèn luyện kỹ năng lập trình, thử nghiệm, và tổ chức báo cáo khoa học.
+
+Bắt buộc: triển khai pipeline học máy truyền thống trên ít nhất một loại dữ liệu.
+
+Khuyến khích: nếu có thể, thực hiện thêm pipeline học sâu (deep learning) để so sánh với pipeline truyền thống. Các nhóm có phần mở rộng này sẽ được cộng điểm thưởng.
+
+4. Nội dung
+Bài tập lớn của môn học bao gồm ba chủ đề tương ứng với ba loại dữ liệu phổ biến: dữ liệu dạng bảng, dữ liệu văn bản và dữ liệu ảnh. Mỗi nhóm hoặc cá nhân sẽ lựa chọn ít nhất một chủ đề để triển khai. Đối với mỗi loại dữ liệu, sinh viên cần thực hiện đầy đủ các bước trong pipeline học máy truyền thống, từ EDA, tiền xử lý, trích xuất đặc trưng, huấn luyện mô hình đến đánh giá kết quả.
+Việc thực hiện EDA là yêu cầu bắt buộc. Nếu sinh viên triển khai thêm pipeline học sâu (deep learning) để so sánh với pipeline truyền thống, báo cáo sẽ được cộng thêm điểm thưởng.
+
+4.1. Bài 1: Học máy với dữ liệu dạng bảng (Tabular Data)
+Sinh viên lựa chọn một tập dữ liệu phù hợp để triển khai bài tập, với các ràng buộc sau:
+
+Các nhóm không được chọn trùng tập dữ liệu.
+
+Tập dữ liệu phải có missing value để sinh viên thực hành kỹ thuật imputation.
+
+Tập dữ liệu phải có categorical value để sinh viên thực hành các kỹ thuật encoding.
+
+Số lượng mẫu (sample size) đủ lớn để pipeline có ý nghĩa.
+Nhiệm vụ: Xây dựng pipeline học máy truyền thống cho dữ liệu dạng bảng. Pipeline phải được thiết kế sao cho cho phép cấu hình các kỹ thuật và tham số ở từng bước (Ví dụ: Scaling: MinMaxScaler/StandardScaler; Giảm số chiều: PCA; Mô hình: Logistic Regression, SVM, Random Forest).
+Kết quả: Báo cáo phân tích EDA, mô tả pipeline, tham số đã thử nghiệm, và so sánh hiệu quả.
+
+4.2. Bài 2: Học máy với dữ liệu dạng văn bản (Text Data)
+Sinh viên lựa chọn một tập dữ liệu văn bản để triển khai bài tập, với các ràng buộc sau:
+
+Các nhóm không được chọn trùng tập dữ liệu.
+
+Tập dữ liệu phải có độ đa dạng về nội dung (ví dụ: nhiều chủ đề hoặc nhiều nhãn phân loại khác nhau).
+
+Số lượng mẫu (sample size) phải đủ lớn để mô hình có ý nghĩa.
+Nhiệm vụ: Sinh viên cần hiện thực ít nhất hai phương pháp trích xuất đặc trưng:
+
+Truyền thống: Bag-of-Words (BoW), TF-IDF, hoặc n-gram.
+
+Hiện đại (deep learning embeddings): Word2Vec/GloVe hoặc Transformer (BERT, RoBERTa, DistilBERT).
+Sinh viên cần chạy trích xuất embedding và lưu kết quả thành file định dạng .npy hoặc .h5, sau đó sử dụng các file embedding này làm đầu vào cho các mô hình phân loại truyền thống hoặc mạng nơ-ron đơn giản.
+Pipeline cần được xây dựng linh hoạt để cấu hình tiền xử lý, kỹ thuật embedding, và mô hình phân loại.
+Kết quả: Báo cáo phân tích EDA (số lượng từ, phân phối độ dài, tần suất từ), mô tả pipeline, tham số thử nghiệm, so sánh truyền thống và hiện đại.
+
+4.3. Bài 3: Học máy với dữ liệu dạng ảnh (Image Data)
+Sinh viên lựa chọn một tập dữ liệu ảnh để triển khai bài tập, với các ràng buộc:
+
+Các nhóm không được chọn trùng tập dữ liệu.
+
+Tập dữ liệu phải có số lượng ảnh đủ lớn và đa dạng.
+
+Kích thước và chất lượng ảnh nên phù hợp để xử lý trên Colab/máy cá nhân.
+Nhiệm vụ: Thực hiện EDA cơ bản cho dữ liệu ảnh. Xây dựng pipeline:
+
+Trích xuất đặc trưng hiện đại: dùng pretrained models (CNN: VGG16, ResNet, EfficientNet hoặc Transformer: ViT, Swin).
+
+Lưu đặc trưng thành file .npy hoặc .h5 để huấn luyện phân loại phía sau.
+
+Pipeline phải cho phép linh hoạt cấu hình các bước (resize, chọn mô hình trích xuất, mô hình phân loại).
+Kết quả: Báo cáo EDA, mô tả pipeline, các đặc trưng đã lưu, so sánh các mô hình học sâu.
+
+5. Yêu cầu sản phẩm
+Toàn bộ bài làm phải có front-end là Google Colab Notebook. Sinh viên có thể (và được khuyến khích) viết thêm các module hỗ trợ bằng Python, sau đó import và sử dụng trực tiếp trong Colab.
+File Colab nộp lên phải đảm bảo yêu cầu:
+
+Khi chọn chức năng Runtime -> Run all, toàn bộ notebook phải chạy thành công mà không phát sinh lỗi.
+
+Không được mount vào các dịch vụ cloud cá nhân (Google Drive, Dropbox,...).
+
+Dữ liệu cần được download từ nguồn công khai (có link cụ thể trong notebook) và giải nén trực tiếp vào môi trường máy chủ Colab.
+
+Các bước chuẩn bị dữ liệu, cài đặt thư viện bổ sung (nếu có) phải được ghi rõ và chạy tự động trong notebook.
+Ngoài notebook, sản phẩm nộp phải bao gồm:
+
+Báo cáo PDF: trình bày EDA, pipeline, các thí nghiệm, so sánh và phân tích.
+
+Các file đặc trưng đã trích xuất (.npy hoặc .h5), nộp kèm theo hoặc ghi rõ đường link tải.
+
+Cấu trúc thư mục trong file nộp (.zip) phải rõ ràng: gồm thư mục notebooks/, modules/, reports/, và features/.
+
+Khuyến khích: Tải mã nguồn lên GitHub, chia sẻ link. README cần đủ thông tin: Môn học, GVHD, Thành viên, Mục tiêu, Hướng dẫn chạy, Cấu trúc thư mục, Link báo cáo/Colab.
+
+6. Hình thức làm việc
+
+Nhóm 2-3 thành viên.
+
+Khuyến khích xây dựng kho tư liệu minh chứng (hình ảnh, video họp nhóm, biên bản thảo luận) để chứng minh sự hợp tác.
+
+Báo cáo phải có bảng phân công công việc chi tiết kèm tỷ lệ phần trăm hoàn thành. Điểm cá nhân = Điểm nhóm × Tỷ lệ đóng góp (%).
+
+7. Tiêu chí đánh giá
+
+Hoàn thiện pipeline truyền thống (40%): Đầy đủ EDA, tiền xử lý, trích xuất đặc trưng, huấn luyện, đánh giá.
+
+Chất lượng phân tích và thí nghiệm (25%): So sánh cấu hình, giải thích kết quả, phân tích ưu/nhược điểm.
+
+Báo cáo (20%): Trình bày rõ ràng, bảng biểu, hình ảnh, bảng phân công và tỷ lệ đóng góp.
+
+Tính hoàn chỉnh của sản phẩm nộp (10%): Colab chạy thành công Run all, cấu trúc thư mục rõ ràng, file đặc trưng lưu đúng định dạng.
+
+Tinh thần làm việc nhóm (5%): Có minh chứng hoạt động.
+
+Điểm cộng: +5% nếu triển khai pipeline học sâu (để so sánh); +5% nếu công bố GitHub chuẩn mực với README đầy đủ.
