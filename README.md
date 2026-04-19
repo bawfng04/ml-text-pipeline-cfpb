@@ -156,3 +156,24 @@ Xem chi tiết trong `reports/experiment_results.csv` và notebook Section 9.
 - **Notebook Colab:** [link]
 - **Báo cáo PDF:** `reports/report.pdf`
 - **GitHub:** https://github.com/bawfng04/ml-text-pipeline-cfpb
+
+---
+
+## Developer Tools
+
+- Unit tests for core modules are in `tests/`
+- CI workflow runs tests on push/PR: `.github/workflows/ci.yml`
+- Notebook runner script: `scripts/run_pipeline.py`
+
+### Run tests locally
+
+```bash
+pip install pytest
+pytest -q
+```
+
+### Run pipeline from terminal
+
+```bash
+python scripts/run_pipeline.py
+```
