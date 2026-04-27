@@ -1,0 +1,13 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {figure}{\numberline {1}{\ignorespaces Kiến trúc tổng quan của pipeline phân loại văn bản}}{5}{figure.caption.5}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Phân phối nhãn sau lấy mẫu và làm sạch}}{8}{figure.caption.7}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Xu hướng số lượng khiếu nại theo thời gian (tháng/năm)}}{8}{figure.caption.8}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Phân phối độ dài văn bản và boxplot theo nhãn}}{9}{figure.caption.9}%
+\contentsline {figure}{\numberline {5}{\ignorespaces Word Cloud của các từ phổ biến nhất sau khi tiền xử lý}}{9}{figure.caption.10}%
+\contentsline {figure}{\numberline {6}{\ignorespaces Top 25 từ xuất hiện nhiều nhất trong bộ dữ liệu}}{9}{figure.caption.11}%
+\contentsline {figure}{\numberline {7}{\ignorespaces So sánh tần suất từ trước và sau khi tiền xử lý (loại bỏ stopwords và làm sạch)}}{9}{figure.caption.12}%
+\contentsline {figure}{\numberline {8}{\ignorespaces So sánh F1-weighted theo đặc trưng và mô hình}}{11}{figure.caption.15}%
+\contentsline {figure}{\numberline {9}{\ignorespaces Đường cong tuning tham số $C$ trên TF-IDF bigram}}{12}{figure.caption.17}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Chỉ số F1-weighted chi tiết cho từng lớp của mô hình tốt nhất}}{13}{figure.caption.19}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Ma trận nhầm lẫn chuẩn hóa của mô hình tốt nhất}}{14}{figure.caption.20}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Trade-off giữa thời gian huấn luyện và F1-weighted}}{14}{figure.caption.21}%

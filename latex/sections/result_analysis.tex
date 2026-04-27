@@ -1,0 +1,208 @@
+\section{Kết quả thực nghiệm và phân tích}
+
+\subsection{Tổng quan dữ liệu sau tiền xử lý}
+Dữ liệu sạch hiện tại trong \texttt{data/df\_clean.parquet} gồm 13{,}983 mẫu, 7 lớp cân bằng gần đều. Độ dài văn bản sau tiền xử lý có đặc trưng:
+\begin{equation}
+\mu=96.90,\ \mathrm{median}=65,\ Q_1=36,\ Q_3=118,\ \max=2649\ \text{(từ)}
+\end{equation}
+
+Hình~\ref{fig:label_dist} và Hình~\ref{fig:text_len} minh họa phân phối nhãn và độ dài văn bản.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{01_label_distribution.png}
+\caption{Phân phối nhãn sau lấy mẫu và làm sạch}
+\label{fig:label_dist}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{05_time_trend.png}
+\caption{Xu hướng số lượng khiếu nại theo thời gian (tháng/năm)}
+\label{fig:time_trend}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{02_text_length.png}
+\caption{Phân phối độ dài văn bản và boxplot theo nhãn}
+\label{fig:text_len}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{04_wordcloud.png}
+\caption{Word Cloud của các từ phổ biến nhất sau khi tiền xử lý}
+\label{fig:wordcloud}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{06_top25_words_after_preprocess.png}
+\caption{Top 25 từ xuất hiện nhiều nhất trong bộ dữ liệu}
+\label{fig:top_words}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{03_word_freq_before_after.png}
+\caption{So sánh tần suất từ trước và sau khi tiền xử lý (loại bỏ stopwords và làm sạch)}
+\label{fig:word_freq_comp}
+\end{figure}
+
+
+
+\subsection{Kích thước các không gian đặc trưng}
+\begin{table}[H]
+\centering
+\caption{Kích thước đặc trưng train/test từ artifact huấn luyện}
+\label{tab:feature_shape}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Đặc trưng} & \textbf{Train shape} & \textbf{Test shape} \\
+\midrule
+BoW & (11184, 10254) & (2797, 10254) \\
+TF-IDF Unigram & (11184, 10254) & (2797, 10254) \\
+TF-IDF Bigram & (11184, 50000) & (2797, 50000) \\
+Word2Vec & (11184, 200) & (2797, 200) \\
+BERT (MiniLM) & (11184, 384) & (2797, 384) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Kết quả tổng hợp các mô hình}
+Bảng~\ref{tab:top10} trình bày 10 cấu hình tốt nhất theo F1-weighted từ file \texttt{reports/experiment\_results.csv}.
+
+\begin{table}[H]
+\centering
+\caption{Top-10 cấu hình theo F1-weighted}
+\label{tab:top10}
+\begin{tabular}{p{3.4cm}p{2.6cm}ccc}
+\toprule
+\textbf{Feature} & \textbf{Model} & \textbf{Acc.} & \textbf{F1-w} & \textbf{Time (s)} \\
+\midrule
+TF-IDF Bigram (C=0.5) & SVM & 0.8631 & 0.8631 & 0.58 \\
+TF-IDF Bigram & SVM & 0.8598 & 0.8599 & 0.75 \\
+TF-IDF Bigram (C=5.0) & Logistic Regression & 0.8595 & 0.8597 & 2.23 \\
+TF-IDF Unigram & Logistic Regression & 0.8588 & 0.8590 & 0.74 \\
+TF-IDF Bigram & Logistic Regression & 0.8570 & 0.8573 & 1.22 \\
+TF-IDF Unigram & SVM & 0.8441 & 0.8440 & 0.78 \\
+TF-IDF Bigram & Complement NB & 0.8380 & 0.8374 & 0.02 \\
+BoW & Logistic Regression & 0.8298 & 0.8305 & 39.55 \\
+TF-IDF Unigram & Random Forest & 0.8291 & 0.8294 & 4.16 \\
+TF-IDF Bigram & Random Forest & 0.8270 & 0.8270 & 7.70 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Cấu hình tốt nhất toàn cục là \textbf{TF-IDF Bigram + LinearSVC (C=0.5)} với:
+\begin{equation}
+\mathrm{Accuracy}=0.8631,\ \mathrm{F1}_{macro}=0.8631,\ \mathrm{F1}_{weighted}=0.8631
+\end{equation}
+
+Hình~\ref{fig:f1_grouped} cho thấy xu hướng chung: họ TF-IDF, đặc biệt bigram, chiếm ưu thế rõ rệt.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth]{08_f1_grouped_bar.png}
+\caption{So sánh F1-weighted theo đặc trưng và mô hình}
+\label{fig:f1_grouped}
+\end{figure}
+
+\subsection{So sánh truyền thống và embedding hiện đại}
+Trong artifact hiện tại:
+\begin{itemize}[nosep]
+    \item Best truyền thống: TF-IDF Bigram (C=0.5) + SVM, F1-w = 0.8631.
+    \item Best hiện đại: BERT (MiniLM) + SVM, F1-w = 0.8241.
+\end{itemize}
+
+Độ chênh:
+\begin{equation}
+\Delta F1 = 0.8631 - 0.8241 = 0.0390
+\end{equation}
+
+Kết quả này cho thấy với cỡ dữ liệu và cách dùng embedding hiện tại (feature extractor, không fine-tune), TF-IDF bigram vẫn phù hợp hơn cho bài toán phân loại khiếu nại ngắn/trung bình.
+
+\subsection{Phân tích hyperparameter tuning}
+Kết quả 3-fold CV theo lưới $C$ trên TF-IDF bigram được tóm tắt trong Bảng~\ref{tab:tuning}.
+
+\begin{table}[H]
+\centering
+\caption{Kết quả tuning tham số $C$ (3-fold CV, F1-weighted)}
+\label{tab:tuning}
+\begin{tabular}{ccc}
+\toprule
+\textbf{$C$} & \textbf{LR CV F1-w} & \textbf{SVM CV F1-w} \\
+\midrule
+0.01 & 0.7658 & 0.8175 \\
+0.10 & 0.8156 & 0.8541 \\
+0.50 & 0.8474 & 0.8593 \\
+1.00 & 0.8531 & 0.8577 \\
+5.00 & 0.8568 & 0.8508 \\
+10.00 & 0.8561 & 0.8488 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Sau tuning trên tập test:
+\begin{itemize}[nosep]
+    \item SVM: 0.8599 $\rightarrow$ 0.8631 \text{(tăng +0.0032)}.
+    \item Logistic Regression: 0.8573 $\rightarrow$ 0.8597 \text{(tăng +0.0024)}.
+\end{itemize}
+
+Hình~\ref{fig:tuning_curve} trực quan hóa xu hướng này.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\textwidth]{07_tuning_curve.png}
+\caption{Đường cong tuning tham số $C$ trên TF-IDF bigram}
+\label{fig:tuning_curve}
+\end{figure}
+
+\subsection{Phân tích theo từng lớp}
+Với mô hình tốt nhất (TF-IDF Bigram + SVM, $C=0.5$), chỉ số theo lớp như Bảng~\ref{tab:perclass}.
+
+\begin{table}[H]
+\centering
+\caption{Precision/Recall/F1 theo lớp của mô hình tốt nhất}
+\label{tab:perclass}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Lớp} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+\midrule
+Bank account & 0.8125 & 0.8471 & 0.8294 \\
+Credit card & 0.7971 & 0.8150 & 0.8059 \\
+Credit reporting & 0.8378 & 0.8546 & 0.8462 \\
+Debt collection & 0.8416 & 0.8120 & 0.8265 \\
+Money transfer & 0.8880 & 0.8325 & 0.8594 \\
+Mortgage & 0.9425 & 0.9425 & 0.9425 \\
+Student loan & 0.9259 & 0.9375 & 0.9317 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Lớp khó nhất là \texttt{Credit card} (F1 = 0.8059), phản ánh mức chồng lấp ngữ nghĩa với các khiếu nại \texttt{Bank account} và \texttt{Credit reporting}. Ngược lại, \texttt{Mortgage} và \texttt{Student loan} có ngôn ngữ đặc trưng rõ nên đạt F1 cao.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{10_f1_per_class.png}
+\caption{Chỉ số F1-weighted chi tiết cho từng lớp của mô hình tốt nhất}
+\label{fig:f1_per_class}
+\end{figure}
+
+\subsection{Phân tích ma trận nhầm lẫn và đánh đổi tốc độ-hiệu năng}
+Hình~\ref{fig:cm} cho thấy phần lớn sai số tập trung ở các nhóm dịch vụ tài chính tiêu dùng gần nghĩa. Hình~\ref{fig:tradeoff} cho thấy một số mô hình BoW có thời gian huấn luyện cao nhưng không mang lại F1 tương ứng.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.9\textwidth]{09_confusion_matrix.png}
+\caption{Ma trận nhầm lẫn chuẩn hóa của mô hình tốt nhất}
+\label{fig:cm}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\textwidth]{11_tradeoff_time_vs_f1.png}
+\caption{Trade-off giữa thời gian huấn luyện và F1-weighted}
+\label{fig:tradeoff}
+\end{figure}

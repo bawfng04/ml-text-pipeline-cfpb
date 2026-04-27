@@ -1,0 +1,64 @@
+\section{Phụ lục}
+
+\subsection{Cấu trúc mã nguồn chính}
+\begin{verbatim}
+ml-text-pipeline-cfpb/
++-- modules/
+|   +-- text_preprocessor.py
+|   +-- feature_extractor.py
+|   \-- trainer.py
++-- notebooks/
+|   \-- main_pipeline.ipynb
++-- scripts/
+|   \-- run_pipeline.py
++-- reports/
+|   \-- experiment_results.csv
++-- features/
+|   +-- bow_*.npz, tfidf_*.npz
+|   +-- w2v_*.npy, bert_*.npy
+|   +-- y_train.npy, y_test.npy
+|   \-- vec_*.pkl, word2vec.model
+\-- tests/
+    +-- test_text_preprocessor.py
+    +-- test_feature_extractor.py
+    \-- test_trainer.py
+\end{verbatim}
+
+\subsection{Thông tin tái lập thực nghiệm}
+\textbf{Bước 1:} Cài thư viện.
+\begin{verbatim}
+pip install -r requirements.txt
+\end{verbatim}
+
+\textbf{Bước 2:} Chạy notebook pipeline (Colab hoặc local Jupyter).
+\begin{verbatim}
+jupyter notebook notebooks/main_pipeline.ipynb
+\end{verbatim}
+
+\textbf{Bước 3:} (Tùy chọn) chạy script thực thi notebook tự động.
+\begin{verbatim}
+python scripts/run_pipeline.py --notebook notebooks/main_pipeline.ipynb
+\end{verbatim}
+
+Khuyến nghị sửa môi trường:
+\begin{itemize}[nosep]
+    \item Cài lại \texttt{pytest} theo interpreter đang dùng.
+    \item Hoặc chạy \texttt{python -m pytest -q} thay cho launcher trực tiếp.
+\end{itemize}
+
+\subsection{Mẫu phân công thành viên}
+\begin{table}[H]
+\centering
+\caption{Bảng phân công công việc (điền trước khi nộp)}
+\begin{tabular}{clc}
+\toprule
+\textbf{STT} & \textbf{Họ tên} & \textbf{Tỷ lệ đóng góp (\%)} \\
+\midrule
+1 & [Thành viên 1] & [..] \\
+2 & [Thành viên 2] & [..] \\
+3 & [Thành viên 3] & [..] \\
+4 & [Thành viên 4] & [..] \\
+5 & [Thành viên 5] & [..] \\
+\bottomrule
+\end{tabular}
+\end{table}

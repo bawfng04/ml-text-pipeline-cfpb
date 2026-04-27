@@ -3,6 +3,8 @@ data/complaints.csv
 data/complaints.csv.zip
 data/df_clean.parquet
 
+/latex-example
+
 # Python
 __pycache__/
 *.py[cod]

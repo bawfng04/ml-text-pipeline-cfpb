@@ -1,0 +1,164 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{setspace}
+\usepackage{geometry}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{xcolor}
+\usepackage{url}
+\usepackage{hyperref}
+\usepackage{tocloft}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows, positioning}
+
+\geometry{left=2.7cm,right=2.7cm,top=2.5cm,bottom=2.5cm}
+\setstretch{1.25}
+\graphicspath{{figures/}}
+
+\AtBeginDocument{\renewcommand*\contentsname{Mục lục}}
+\AtBeginDocument{\renewcommand*\listfigurename{Danh mục hình vẽ}}
+\AtBeginDocument{\renewcommand*\listtablename{Danh mục bảng biểu}}
+\AtBeginDocument{\renewcommand*\refname{Tài liệu tham khảo}}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    citecolor=black,
+    urlcolor=blue,
+    pdfborder={0 0 0}
+}
+
+\setlength{\headheight}{35pt}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[L]{
+\begin{tabular}{rl}
+\begin{picture}(25,15)(0,0)
+\put(0,-8){\includegraphics[width=8mm,height=8mm]{hcmut.png}}
+\end{picture}
+&
+\begin{tabular}{l}
+\small \textbf{\ttfamily Trường Đại học Bách khoa -- ĐHQG-HCM}\\
+\small \textbf{\ttfamily Khoa Khoa học và Kỹ thuật Máy tính}
+\end{tabular}
+\end{tabular}
+}
+\fancyhead[R]{\small \ttfamily Học máy -- HK2 2025-2026}
+\fancyfoot{}
+\fancyfoot[L]{\scriptsize \ttfamily Báo cáo bài tập lớn môn Học máy}
+\fancyfoot[R]{\scriptsize \ttfamily Trang \thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\footrulewidth}{0.3pt}
+
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{2}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\textbf{ĐẠI HỌC QUỐC GIA THÀNH PHỐ HỒ CHÍ MINH} \\
+\textbf{TRƯỜNG ĐẠI HỌC BÁCH KHOA} \\
+\textbf{KHOA KHOA HỌC VÀ KỸ THUẬT MÁY TÍNH}
+\end{center}
+
+\vspace{1cm}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=3.0cm]{hcmut.png}
+\end{figure}
+
+\vspace{0.8cm}
+
+\begin{center}
+\begin{tabular}{c}
+\multicolumn{1}{c}{\textbf{\LARGE HỌC MÁY (CO3061)}} \\
+~~\\
+\hline
+\\
+\multicolumn{1}{c}{\textbf{\Large BÁO CÁO BÀI TẬP LỚN}} \\
+\\
+\textbf{\large \MakeUppercase{Xây dựng pipeline phân loại văn bản}} \\
+\textbf{\large \MakeUppercase{CFPB Consumer Complaints}} \\
+\\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{0.8cm}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{r l}
+\textbf{Giảng viên hướng dẫn:} & [Điền tên GVHD] \\
+\textbf{Nhóm thực hiện:} & [Điền thành viên 1 -- MSSV] \\
+& [Điền thành viên 2 -- MSSV] \\
+& [Điền thành viên 3 -- MSSV] \\
+\end{tabular}
+\end{table}
+
+\vfill
+\begin{center}
+TP. Hồ Chí Minh -- 2026
+\end{center}
+\end{titlepage}
+
+\thispagestyle{empty}
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\listoffigures
+\addcontentsline{toc}{section}{Danh mục hình vẽ}
+\thispagestyle{empty}
+\newpage
+\listoftables
+\addcontentsline{toc}{section}{Danh mục bảng biểu}
+\thispagestyle{empty}
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section*{Lời nói đầu}
+\addcontentsline{toc}{section}{Lời nói đầu}
+
+Bài tập lớn môn Học máy yêu cầu triển khai trọn vẹn một pipeline học máy truyền thống cho dữ liệu văn bản, bao gồm các bước từ EDA, tiền xử lý, trích xuất đặc trưng, huấn luyện mô hình đến đánh giá kết quả. Trong báo cáo này, nhóm thực hiện bài toán phân loại khiếu nại người tiêu dùng tài chính từ bộ dữ liệu CFPB theo 7 nhóm sản phẩm chính.
+
+Pipeline được tổ chức theo hướng module hóa nhằm đảm bảo khả năng tái sử dụng và mở rộng: module tiền xử lý văn bản, module trích xuất đặc trưng, module huấn luyện/đánh giá, cùng notebook tổng hợp thực nghiệm. Bên cạnh các đặc trưng truyền thống (BoW, TF-IDF), nhóm bổ sung hai hướng embedding hiện đại (Word2Vec và BERT sentence embeddings) để so sánh định lượng, qua đó đáp ứng cả yêu cầu bắt buộc và phần khuyến khích của đề bài.
+
+Bố cục của báo cáo được tổ chức thành 4 phần chính:
+\begin{enumerate}[nosep]
+    \item \textbf{Cơ sở lý thuyết và phát biểu bài toán:} Trình bày mục tiêu, dữ liệu và nền tảng các phương pháp sử dụng.
+    \item \textbf{Thiết kế và hiện thực hệ thống:} Kiến trúc pipeline, quy trình tiền xử lý và các kỹ thuật trích xuất đặc trưng.
+    \item \textbf{Kết quả thực nghiệm và phân tích:} Phân tích số liệu định lượng, so sánh các mô hình và đánh giá hiệu năng chi tiết.
+    \item \textbf{Kết luận và hướng phát triển:} Tổng kết các kết quả chính và đề xuất hướng mở rộng.
+\end{enumerate}
+
+\newpage
+\input{sections/theory}
+\newpage
+\input{sections/simulation}
+\newpage
+\input{sections/result_analysis}
+\newpage
+\input{sections/conclusion}
+\newpage
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\end{document}

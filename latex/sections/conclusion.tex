@@ -1,0 +1,44 @@
+\section{Kết luận và hướng phát triển}
+
+\subsection{Mức độ hoàn thành yêu cầu bài tập lớn}
+Dự án đã hoàn thành các yêu cầu cốt lõi của đề bài dữ liệu văn bản:
+\begin{itemize}[nosep]
+    \item Thực hiện EDA và trực quan hóa phân phối dữ liệu.
+    \item Xây dựng pipeline tiền xử lý văn bản có khả năng tái sử dụng.
+    \item Triển khai tối thiểu hai hướng trích xuất đặc trưng (truyền thống và hiện đại).
+    \item Lưu đặc trưng ra file \texttt{.npz/.npy} để tái dùng cho huấn luyện.
+    \item Huấn luyện và so sánh nhiều mô hình phân loại với bộ chỉ số đầy đủ.
+\end{itemize}
+
+\subsection{Kết quả chính}
+Các kết luận định lượng quan trọng:
+\begin{enumerate}[nosep]
+    \item Mô hình tốt nhất: \textbf{TF-IDF Bigram + LinearSVC (C=0.5)} với F1-weighted = 0.8631.
+    \item Tuning tham số giúp cải thiện hiệu năng nhỏ nhưng ổn định (SVM +0.0032; LR +0.0024).
+    \item Thực nghiệm cho thấy các embedding hiện đại (BERT/Word2Vec dạng feature extractor) chưa vượt qua TF-IDF bigram trong bài toán này.
+    \item Sai số tập trung ở các lớp có ngữ nghĩa gần nhau, tiêu biểu \texttt{Credit card}.
+\end{enumerate}
+
+\subsection{Đóng góp kỹ thuật của hệ thống}
+Bên cạnh kết quả mô hình, hệ thống có các đóng góp thực tiễn:
+\begin{itemize}[nosep]
+    \item Thiết kế module rõ ràng, tách được preprocessing/feature/training.
+    \item Lưu đầy đủ artifact phục vụ tái lập thí nghiệm.
+    \item Có sẵn unit tests cho các module trọng yếu.
+    \item Notebook đáp ứng kịch bản chạy end-to-end trên nhiều nền tảng điện toán khác nhau.
+\end{itemize}
+
+\subsection{Hạn chế hiện tại}
+\begin{itemize}[nosep]
+    \item BERT mới dùng ở chế độ embedding tĩnh, chưa fine-tune theo miền CFPB.
+    \item Chưa thực hiện calibration hoặc threshold optimization theo lớp.
+\end{itemize}
+
+\subsection{Hướng phát triển tiếp theo}
+Các hướng mở rộng khả thi:
+\begin{enumerate}[nosep]
+    \item Fine-tune transformer trực tiếp trên bài toán phân loại 7 lớp.
+    \item Thử nghiệm hybrid feature (TF-IDF + contextual embedding) và stacking.
+    \item Mở rộng đánh giá với k-fold stratified và kiểm định thống kê chênh lệch mô hình.
+    \item Thiết lập quy trình CI để tự động kiểm thử, tái sinh artifact và kiểm tra tính nhất quán dữ liệu.
+\end{enumerate}

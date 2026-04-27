@@ -1,0 +1,7 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {table}{\numberline {1}{\ignorespaces Phân bố nhãn trong dữ liệu sạch hiện tại}}{3}{table.caption.4}%
+\contentsline {table}{\numberline {2}{\ignorespaces Ma trận thực nghiệm}}{7}{table.caption.6}%
+\contentsline {table}{\numberline {3}{\ignorespaces Kích thước đặc trưng train/test từ artifact huấn luyện}}{10}{table.caption.13}%
+\contentsline {table}{\numberline {4}{\ignorespaces Top-10 cấu hình theo F1-weighted}}{10}{table.caption.14}%
+\contentsline {table}{\numberline {5}{\ignorespaces Kết quả tuning tham số $C$ (3-fold CV, F1-weighted)}}{11}{table.caption.16}%
+\contentsline {table}{\numberline {6}{\ignorespaces Precision/Recall/F1 theo lớp của mô hình tốt nhất}}{12}{table.caption.18}%

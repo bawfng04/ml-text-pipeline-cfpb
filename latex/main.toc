@@ -1,0 +1,39 @@
+\babel@toc {vietnamese}{}\relax 
+\contentsline {section}{Danh mục hình vẽ}{2}{table.caption.2}%
+\contentsline {section}{Danh mục bảng biểu}{3}{table.caption.2}%
+\contentsline {section}{Lời nói đầu}{1}{section*.3}%
+\contentsline {section}{\numberline {1}Cơ sở lý thuyết và phát biểu bài toán}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Phát biểu bài toán}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Bộ dữ liệu và chiến lược lấy mẫu}{2}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Nguồn dữ liệu}{2}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Tiêu chí lọc và chuẩn hóa nhãn}{2}{subsubsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.3}Pipeline tiền xử lý văn bản}{3}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Các phương pháp trích xuất đặc trưng}{3}{subsection.1.4}%
+\contentsline {subsubsection}{\numberline {1.4.1}Đặc trưng truyền thống}{3}{subsubsection.1.4.1}%
+\contentsline {subsubsection}{\numberline {1.4.2}Đặc trưng hiện đại}{3}{subsubsection.1.4.2}%
+\contentsline {subsection}{\numberline {1.5}Mô hình phân loại và chỉ số đánh giá}{4}{subsection.1.5}%
+\contentsline {subsection}{\numberline {1.6}Định hướng thiết kế thực nghiệm}{4}{subsection.1.6}%
+\contentsline {section}{\numberline {2}Thiết kế và hiện thực hệ thống}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Kiến trúc triển khai}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Tiền xử lý văn bản}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Trích xuất đặc trưng}{6}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Đặc trưng truyền thống}{6}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}Đặc trưng hiện đại}{6}{subsubsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.4}Thiết lập huấn luyện và đánh giá}{6}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Ma trận thí nghiệm}{6}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Hyperparameter tuning}{7}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Kiểm thử mã nguồn}{7}{subsection.2.7}%
+\contentsline {section}{\numberline {3}Kết quả thực nghiệm và phân tích}{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Tổng quan dữ liệu sau tiền xử lý}{8}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Kích thước các không gian đặc trưng}{10}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Kết quả tổng hợp các mô hình}{10}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}So sánh truyền thống và embedding hiện đại}{11}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Phân tích hyperparameter tuning}{11}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Phân tích theo từng lớp}{12}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Phân tích ma trận nhầm lẫn và đánh đổi tốc độ-hiệu năng}{13}{subsection.3.7}%
+\contentsline {section}{\numberline {4}Kết luận và hướng phát triển}{15}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Mức độ hoàn thành yêu cầu bài tập lớn}{15}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Kết quả chính}{15}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Đóng góp kỹ thuật của hệ thống}{15}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Hạn chế hiện tại}{15}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Hướng phát triển tiếp theo}{15}{subsection.4.5}%

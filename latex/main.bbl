@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{scikit-learn}
+{scikit-learn developers}, ``scikit-learn: Machine learning in python,'' 2026.
+\newblock Accessed: 2026-04-27.
+
+\bibitem{mikolov2013efficient}
+T.~Mikolov, K.~Chen, G.~Corrado, and J.~Dean, ``Efficient estimation of word
+  representations in vector space,'' in {\em Proceedings of Workshop at ICLR},
+  2013.
+
+\bibitem{reimers2019sentencebert}
+N.~Reimers and I.~Gurevych, ``Sentence-bert: Sentence embeddings using siamese
+  bert-networks,'' in {\em Proceedings of EMNLP-IJCNLP}, pp.~3982--3992, 2019.
+
+\end{thebibliography}

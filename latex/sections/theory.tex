@@ -1,0 +1,105 @@
+\section{Cơ sở lý thuyết và phát biểu bài toán}
+
+\subsection{Phát biểu bài toán}
+Mục tiêu của dự án là xây dựng pipeline học máy để \textbf{phân loại nội dung khiếu nại tài chính} từ bộ dữ liệu CFPB (Consumer Financial Protection Bureau) vào các nhóm sản phẩm. Bài toán được mô hình hóa dưới dạng phân loại đa lớp:
+\begin{equation}
+\hat{y} = f(x), \quad y \in \{1,\ldots,K\}, \ K=7
+\end{equation}
+trong đó $x$ là văn bản khiếu nại, $y$ là nhãn sản phẩm tài chính tương ứng.
+
+Theo yêu cầu học phần, hệ thống cần bao phủ đầy đủ các bước của pipeline truyền thống: EDA, tiền xử lý, trích xuất đặc trưng, huấn luyện và đánh giá. Đồng thời, nhóm mở rộng thêm embedding hiện đại (Word2Vec, BERT) để so sánh với đặc trưng truyền thống.
+
+\subsection{Bộ dữ liệu và chiến lược lấy mẫu}
+\subsubsection{Nguồn dữ liệu}
+Dữ liệu được tải từ cổng công khai CFPB\footnote{\url{https://files.consumerfinance.gov/ccdb/complaints.csv.zip}}. File gốc có kích thước lớn, vì vậy notebook sử dụng cơ chế đọc theo từng khối (chunked reading) để tránh quá tải bộ nhớ.
+
+\subsubsection{Tiêu chí lọc và chuẩn hóa nhãn}
+Từ dữ liệu thô, nhóm áp dụng các bước:
+\begin{itemize}[nosep]
+    \item Chỉ giữ mẫu có \texttt{Consumer complaint narrative} không rỗng và đủ dài.
+    \item Chuẩn hóa các nhãn \texttt{Product} thay đổi theo thời gian về tập nhãn thống nhất.
+    \item Loại các lớp có kích thước quá nhỏ, sau đó giữ top-7 lớp nhiều mẫu nhất.
+    \item Lấy mẫu cân bằng theo lớp, kết hợp lọc hậu tiền xử lý (văn bản quá ngắn).
+\end{itemize}
+
+Kết quả sau xử lý sạch hiện có 13{,}983 mẫu, phân bố gần cân bằng như Bảng~\ref{tab:class_dist}.
+
+\begin{table}[H]
+\centering
+\caption{Phân bố nhãn trong dữ liệu sạch hiện tại}
+\label{tab:class_dist}
+\begin{tabular}{lrr}
+\toprule
+\textbf{Nhãn} & \textbf{Số mẫu} & \textbf{Tỷ lệ (\%)} \\
+\midrule
+Bank account & 1{,}998 & 14.29 \\
+Credit card & 1{,}999 & 14.30 \\
+Credit reporting & 1{,}993 & 14.25 \\
+Debt collection & 1{,}995 & 14.27 \\
+Money transfer & 1{,}998 & 14.29 \\
+Mortgage & 2{,}000 & 14.30 \\
+Student loan & 2{,}000 & 14.30 \\
+\midrule
+\textbf{Tổng} & \textbf{13{,}983} & \textbf{100.00} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Pipeline tiền xử lý văn bản}
+Pipeline tiền xử lý được triển khai trong module \texttt{text\_preprocessor.py}, gồm các bước chính:
+\begin{enumerate}[nosep]
+    \item Chuẩn hóa Unicode và chuyển chữ thường.
+    \item Loại URL, email.
+    \item Chuẩn hóa số tiền thành token \texttt{moneytok}.
+    \item Loại token bị ẩn danh dạng \texttt{XX...} và chữ số.
+    \item Loại dấu câu, chuẩn hóa khoảng trắng.
+    \item Tokenization, loại stopwords, lemmatization.
+\end{enumerate}
+
+Sau tiền xử lý, độ dài văn bản (số từ) có trung bình 96.90, trung vị 65, tứ phân vị trên 118 và giá trị lớn nhất 2{,}649 từ.
+
+\subsection{Các phương pháp trích xuất đặc trưng}
+\subsubsection{Đặc trưng truyền thống}
+\textbf{Bag-of-Words (BoW)} biểu diễn văn bản bằng tần suất từ trong từ điển. \textbf{TF-IDF} được dùng ở hai cấu hình: unigram và bigram. Trọng số TF-IDF của từ $t$ trong văn bản $d$:
+\begin{equation}
+\mathrm{tfidf}(t,d) = \mathrm{tf}(t,d) \cdot \log\frac{N}{\mathrm{df}(t)}
+\end{equation}
+trong đó $N$ là số văn bản huấn luyện, $\mathrm{df}(t)$ là số văn bản chứa từ $t$.
+
+\subsubsection{Đặc trưng hiện đại}
+\textbf{Word2Vec}: huấn luyện embedding trên corpus, sau đó lấy trung bình vector từ để tạo vector văn bản:
+\begin{equation}
+\mathbf{v}_{doc} = \frac{1}{|S|}\sum_{w \in S}\mathbf{v}_w
+\end{equation}
+trong đó $S$ là tập từ hợp lệ trong văn bản.
+
+\textbf{BERT sentence embeddings}: sử dụng \texttt{all-MiniLM-L6-v2} (384 chiều), encode trực tiếp văn bản (đã cắt ngắn để giảm thời gian suy diễn).
+
+\subsection{Mô hình phân loại và chỉ số đánh giá}
+Các mô hình trong thực nghiệm được lựa chọn dựa trên đặc thù của dữ liệu văn bản:
+\begin{itemize}[nosep]
+    \item \textbf{Naive Bayes (Multinomial \& Complement):} Phù hợp với đặc trưng tần suất từ (BoW, TF-IDF). Complement NB đặc biệt hiệu quả với dữ liệu có sự mất cân bằng nhẹ.
+    \item \textbf{Logistic Regression:} Mô hình baseline mạnh mẽ cho bài toán phân loại văn bản, dễ giải thích trọng số của từng từ.
+    \item \textbf{LinearSVC (Support Vector Classification):} Hiệu quả cao trong không gian đặc trưng có số chiều lớn (như TF-IDF bigram).
+    \item \textbf{Random Forest:} Mô hình ensemble giúp đánh giá hiệu năng của phương pháp phi tuyến tính trên dữ liệu văn bản.
+\end{itemize}
+
+Với bài toán đa lớp, các chỉ số chính:
+\begin{equation}
+\mathrm{Accuracy} = \frac{\text{số dự đoán đúng}}{\text{tổng số mẫu}}
+\end{equation}
+\begin{equation}
+\mathrm{Precision} = \frac{TP}{TP+FP},\quad
+\mathrm{Recall} = \frac{TP}{TP+FN},\quad
+F1 = \frac{2PR}{P+R}
+\end{equation}
+Báo cáo sử dụng \textbf{F1-weighted} làm tiêu chí xếp hạng chính vì phản ánh đồng thời độ chính xác và mức cân bằng theo lớp.
+
+\subsection{Định hướng thiết kế thực nghiệm}
+Thiết kế thực nghiệm theo nguyên tắc:
+\begin{itemize}[nosep]
+    \item So sánh công bằng nhiều loại đặc trưng trên cùng tập train/test.
+    \item Chỉ dùng mô hình phù hợp miền dữ liệu (ví dụ NB cho đặc trưng không âm).
+    \item Tuning tham số $C$ cho Logistic Regression và LinearSVC trên đặc trưng mạnh nhất.
+    \item Lưu toàn bộ đặc trưng và kết quả để tái lập thí nghiệm.
+\end{itemize}

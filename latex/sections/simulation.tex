@@ -1,0 +1,132 @@
+\section{Thiết kế và hiện thực hệ thống}
+
+\subsection{Kiến trúc triển khai}
+Hệ thống được tổ chức theo kiến trúc module, tách biệt xử lý dữ liệu, trích xuất đặc trưng và huấn luyện mô hình. Cấu trúc chính gồm:
+\begin{itemize}[nosep]
+    \item \texttt{modules/text\_preprocessor.py}: tiền xử lý văn bản.
+    \item \texttt{modules/feature\_extractor.py}: trích xuất BoW, TF-IDF, Word2Vec, BERT.
+    \item \texttt{modules/trainer.py}: huấn luyện, đánh giá, tổng hợp chỉ số.
+    \item \texttt{notebooks/main\_pipeline.ipynb}: orchestrate toàn bộ thí nghiệm.
+    \item \texttt{reports/experiment\_results.csv}: lưu bảng kết quả cuối.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[node distance=1.5cm and 2cm, auto,
+    block/.style={rectangle, draw, fill=blue!10, text width=2.8cm, text centered, rounded corners, minimum height=1.2cm},
+    data/.style={cylinder, draw, shape border rotate=90, fill=gray!10, text width=1.8cm, text centered, minimum height=1.2cm},
+    arrow/.style={thick,->,>=stealth}]
+
+    % Nodes
+    \node [data] (raw) {Raw Data};
+    \node [block, right=of raw] (prep) {Text Preprocessor};
+    \node [block, right=of prep] (feat) {Feature Extractor};
+    \node [block, below=of feat, yshift=-0.5cm] (train) {Model Trainer};
+    \node [data, below=of prep, yshift=-0.5cm] (results) {Reports};
+
+    % Arrows
+    \draw [arrow] (raw) -- (prep);
+    \draw [arrow] (prep) -- (feat);
+    \draw [arrow] (feat) -- (train);
+    \draw [arrow] (train) -- (results);
+    
+\end{tikzpicture}
+\caption{Kiến trúc tổng quan của pipeline phân loại văn bản}
+\label{fig:architecture}
+\end{figure}
+
+Thiết kế này giúp thay thế từng thành phần độc lập mà không làm ảnh hưởng các phần còn lại, phù hợp yêu cầu "pipeline có thể cấu hình" của đề bài.
+
+\subsection{Tiền xử lý văn bản}
+Pipeline tiền xử lý được gọi theo chuỗi:
+\begin{equation}
+\text{clean} \rightarrow \text{tokenize} \rightarrow \text{remove stopwords} \rightarrow \text{lemmatize}
+\end{equation}
+
+Trong bước \texttt{clean}, hệ thống xử lý các đặc thù của CFPB narratives:
+\begin{itemize}[nosep]
+    \item Loại URL, email, số và dấu câu.
+    \item Chuẩn hóa token tiền tệ thành \texttt{moneytok}.
+    \item Loại token ẩn danh dạng \texttt{XX...} thường gặp trong dữ liệu khiếu nại.
+\end{itemize}
+
+Xử lý hàng loạt được song song hóa bằng \texttt{joblib.Parallel} để giảm thời gian tiền xử lý trên tập dữ liệu lớn.
+
+\subsection{Trích xuất đặc trưng}
+\subsubsection{Đặc trưng truyền thống}
+Hai họ đặc trưng sparse được triển khai bằng \texttt{scikit-learn} \cite{scikit-learn}:
+\begin{itemize}[nosep]
+    \item BoW: \texttt{CountVectorizer(max\_features=30000, min\_df=2)}.
+    \item TF-IDF unigram: \texttt{TfidfVectorizer(ngram\_range=(1,1), max\_features=30000, min\_df=2)}.
+    \item TF-IDF bigram: \texttt{TfidfVectorizer(ngram\_range=(1,2), max\_features=50000, min\_df=2)}.
+\end{itemize}
+
+\subsubsection{Đặc trưng hiện đại}
+\begin{itemize}[nosep]
+    \item Word2Vec \cite{mikolov2013efficient}: huấn luyện trên tập train với \texttt{vector\_size=200, epochs=10}, sau đó lấy trung bình vector từ để tạo vector văn bản.
+    \item BERT sentence embedding: \texttt{all-MiniLM-L6-v2} từ \texttt{sentence-transformers} \cite{reimers2019sentencebert}. Văn bản đầu vào được cắt còn 150 từ, model encode ở \texttt{max\_length=128} để cân bằng chất lượng và tốc độ.
+\end{itemize}
+
+Toàn bộ đặc trưng được lưu lại dưới dạng \texttt{.npz} (sparse) hoặc \texttt{.npy} (dense) để tái sử dụng giữa các lần chạy.
+
+\subsection{Thiết lập huấn luyện và đánh giá}
+Dữ liệu được chia train/test theo tỉ lệ 80/20 có stratify theo nhãn. Trên artifact hiện hành:
+\begin{equation}
+|\mathcal{D}_{train}| = 11{,}184, \quad |\mathcal{D}_{test}| = 2{,}797
+\end{equation}
+
+Các mô hình được huấn luyện:
+\begin{itemize}[nosep]
+    \item Complement Naive Bayes, Multinomial Naive Bayes.
+    \item Logistic Regression (solver \texttt{saga}, \texttt{max\_iter=1000}).
+    \item LinearSVC (\texttt{max\_iter=2000}).
+    \item Random Forest (\texttt{n\_estimators=50}, \texttt{max\_features=sqrt}).
+\end{itemize}
+
+Tổng số cấu hình được ghi nhận trong báo cáo kết quả là 20 dòng: 18 cấu hình gốc và 2 cấu hình sau tuning.
+
+\subsection{Ma trận thí nghiệm}
+Bảng~\ref{tab:exp_matrix} mô tả phạm vi mô hình theo từng nhóm đặc trưng.
+
+\begin{table}[H]
+\centering
+\caption{Ma trận thực nghiệm}
+\label{tab:exp_matrix}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Feature} & \textbf{C-NB} & \textbf{M-NB} & \textbf{LR} & \textbf{SVM} & \textbf{RF} \\
+\midrule
+BoW & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+TF-IDF Unigram & \checkmark & \checkmark & \checkmark & \checkmark & \checkmark \\
+TF-IDF Bigram & \checkmark &  & \checkmark & \checkmark & \checkmark \\
+Word2Vec &  &  & \checkmark & \checkmark &  \\
+BERT (MiniLM) &  &  & \checkmark & \checkmark &  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Lý do loại trừ một số tổ hợp:
+\begin{itemize}[nosep]
+    \item Naive Bayes chỉ phù hợp với đặc trưng không âm (BoW/TF-IDF).
+    \item Random Forest không được ưu tiên trên embedding dense vì chi phí tính toán cao và hiệu quả không nổi bật trong benchmark hiện tại.
+\end{itemize}
+
+\subsection{Hyperparameter tuning}
+Tuning được thực hiện trên feature mạnh nhất (TF-IDF bigram) với lưới:
+\begin{equation}
+C \in \{0.01,\ 0.1,\ 0.5,\ 1.0,\ 5.0,\ 10.0\}
+\end{equation}
+Dùng 3-fold CV với tiêu chí \texttt{f1\_weighted} để chọn tham số tốt nhất. Kết quả chọn:
+\begin{equation}
+C_{\text{best,LR}} = 5.0, \quad C_{\text{best,SVM}} = 0.5
+\end{equation}
+
+\subsection{Kiểm thử mã nguồn}
+Bộ kiểm thử đơn vị đã được viết cho ba module chính trong thư mục \texttt{tests/}. Các ca kiểm thử bao phủ:
+\begin{itemize}[nosep]
+    \item Tính đúng đắn của bước làm sạch văn bản và pipeline tiền xử lý.
+    \item Tính nhất quán shape dữ liệu khi build/save/load đặc trưng.
+    \item Tính đầy đủ chỉ số trả về của hàm huấn luyện và sắp xếp bảng tổng hợp.
+\end{itemize}
+
+
